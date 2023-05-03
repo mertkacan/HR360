@@ -1,0 +1,61 @@
+﻿@using Web.Models
+@using ApplicationCore.DTO
+@using Web.Extensions
+@model AdminViewModel
+
+
+<div class="card mx-auto shadow px-4 py-2 col-11" style="background-color: rgb(1, 26, 24, 0.70); ">
+
+    <h1 class="text-warning text-center">Şirket Listesi</h1>
+    <table class="table text-white" id="sirketListe">
+        <thead class="text-warning">
+            <tr>
+                <th>Logo</th>
+                <th>Şirket Adı</th>
+                <th>Ünvan</th>
+                <th>Telefon</th>
+                <th>E-Mail</th>
+                <th>Detay</th>
+                <th>Güncelle</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var sirket in Model.AppCompanyDTOListe)
+            {
+                <tr class="">
+                    <td class="align-middle"> <img src="~/images/@sirket.Logo" class="img-fluid rounded-circle" style="height:100px; width:100px; object-fit:cover;" /> </td>
+                    <td class="align-middle">@sirket.CompanyName</td>
+                    <td class="align-middle">@sirket.CompanyStatus!.GetDisplayName()</td>
+                    <td class="align-middle">@sirket.CompanyPhoneNumber</td>
+                    <td class="align-middle">@sirket.CompanyMail</td>
+                    <td class="align-middle">
+                        <a asp-controller="Admin" asp-action="SirketDetay" asp-route-sirketEmail=@sirket.CompanyMail class="btn btn-warning mr-3">Detay</a>
+                    </td>
+                    <td class="align-middle">
+                        <a asp-area="Admin" asp-controller="Admin" asp-action="SirketGuncelle" asp-route-sirketEmail=@sirket.CompanyMail class="btn btn-info">Güncelle</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+@section Scripts{
+    <script>
+        let table = new DataTable('#sirketListe', {
+            cellProps: {
+                textAlign: "center",
+            },
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json",
+            },
+
+            pageLength: 5,
+            "lengthChange": false,
+
+        });
+
+    </script>
+}

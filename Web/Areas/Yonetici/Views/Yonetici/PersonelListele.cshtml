@@ -1,0 +1,62 @@
+﻿@using Web.Models
+@using ApplicationCore.DTO
+@using Web.Extensions
+@model YoneticiViewModel
+
+
+<div class="container col-11 px-5 py-4 mt-4" style="background-color: rgb(0, 0, 0, 0.7);">
+
+    <h1 class="text-warning text-center"><span class="text-info">@Model.AppUserDTO.CompanyDTO!.CompanyName </span> şirketine ait Personel Listesi</h1>
+    <table class="table text-white" id="personelList">
+        <thead class="text-warning">
+            <tr>
+                <th>Foto</th>
+                <th>Ad Soyad</th>
+                <th>Telefon</th>
+                <th>E-Mail</th>
+                <th>Departman</th>
+                <th>Detay</th>
+                <th>Güncelle</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var personel in Model.AppUsersDTOListe)
+            {
+                <tr class="">
+                    <td class="align-middle"> <img src="~/images/@personel.Picutre" class="img-fluid rounded-circle" style="height:100px; width:100px; object-fit:cover;" /> </td>
+                    <td class="align-middle">@personel.Name @personel.MiddleName @personel.Surname</td>
+                    <td class="align-middle">@personel.PhoneNumber</td>
+                    <td class="align-middle">@personel.Email</td>
+                    <td class="align-middle">@personel.Department!.GetDisplayName()</td>
+                    <td class="align-middle">
+                        <a asp-area="Yonetici" asp-controller="Yonetici" asp-action="PersonelDetay" asp-route-personelEmail=@personel.Email class="btn btn-warning mr-3">Detay</a>
+                    </td>
+                    <td class="align-middle">
+
+                        <a asp-area="Yonetici" asp-controller="Yonetici" asp-action="PersonelBilgiDuzenle" asp-route-personelEmail=@personel.Email class="btn btn-info">Güncelle</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+@section Scripts{
+    <script>
+        let table = new DataTable('#personelList', {
+            cellProps: {
+                textAlign: "center",
+            },
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json",
+            },
+
+            pageLength: 5,
+            "lengthChange": false,
+
+        });
+
+    </script>
+}

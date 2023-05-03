@@ -1,0 +1,187 @@
+﻿@using ApplicationCore.DTO
+@using ApplicationCore.Enums
+@model AdminViewModel
+
+
+<div class="card mx-auto shadow px-4 py-2 col-11" style="background-color: rgb(1, 26, 24, 0.70); ">
+    <h1 class="text-warning text-center mb-4 border-bottom pb-2">Şirket Güncelleme</h1>
+    <form asp-area="Admin" asp-controller="Admin" asp-action="SirketGuncelle" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="@Model.AppCompanyDTO!.Id" />
+        <div class="row">
+            <div class="col-5 border-right">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-4">
+                            <label asp-for="AppCompanyDTO!.CompanyName"><b class="text-warning">Şirket Adı* : </b></label>
+                            <input asp-for="AppCompanyDTO!.CompanyName" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppCompanyDTO!.CompanyName"></span>
+                        </div>
+
+                        @{
+                            var statusList = Html.GetEnumSelectList<CompanyStatus>().ToList();
+                            statusList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+                        }
+                        <div class="mb-3">
+                            <label asp-for="AppCompanyDTO!.CompanyStatus"><b class="text-warning">Şirket Ünvanı* :</b></label>
+                            <div class="">
+                                @Html.DropDownListFor(x => x.AppCompanyDTO!.CompanyStatus, statusList, new { @class = "form-control text-dark" })
+                            </div>
+                            <span class="text-danger" asp-validation-for="AppCompanyDTO!.CompanyStatus"></span>
+                        </div>
+
+                        @{
+                            var vergiDairesiList = Html.GetEnumSelectList<VergiDairesi>().ToList();
+                            vergiDairesiList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+                        }
+                        <div class="mb-3">
+                            <label asp-for="AppCompanyDTO!.VergiDairesi"><b class="text-warning">Şirket Vergi Dairesi* :</b></label>
+                            <div class="">
+                                @Html.DropDownListFor(x => x.AppCompanyDTO!.VergiDairesi, vergiDairesiList, new { @class = "form-control text-dark" })
+                            </div>
+                            <span class="text-danger" asp-validation-for="AppCompanyDTO!.VergiDairesi"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-6">
+                        <div class="mb-4">
+                            <label asp-for="AppCompanyDTO!.CompanyEstablishmentDate"><b class="text-warning">Kuruluş Tarihi* :</b></label>
+                            <input asp-for="AppCompanyDTO!.CompanyEstablishmentDate" type="date" class="form-control  text-white" />
+                            <span class="text-danger" asp-validation-for="AppCompanyDTO!.CompanyEstablishmentDate"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppCompanyDTO!.VergiNumarasi"><b class="text-warning">Vergi No* :</b></label>
+                            <input asp-for="AppCompanyDTO!.VergiNumarasi" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppCompanyDTO!.VergiNumarasi"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppCompanyDTO!.MersisNumarasi"><b class="text-warning">Mersis No* :</b></label>
+                            <input asp-for="AppCompanyDTO!.MersisNumarasi" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppCompanyDTO!.MersisNumarasi"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phoneNumber"><b class="text-warning">Şirket Tel. No* :</b></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0" style="background-color:rgb(255, 255, 255, 0.2); color:white; border-radius:60% 0 0 60%">+90</span>
+                                </div>
+                                <input asp-for="AppCompanyDTO!.CompanyPhoneNumber" value="@Model.AppCompanyDTO!.CompanyPhoneNumber!.Substring(4)" oninput="formatPhoneNumber(this)" type="tel" class="form-control border-left" id="phoneNumber" placeholder="(XXX)-XXX-XX-XX">
+                            </div>
+                            <div>
+                                <span asp-validation-for="AppCompanyDTO!.CompanyPhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-4">
+                    <label asp-for="AppCompanyDTO!.LogoFile"><b class="text-warning">Şirket Logosu* :</b></label>
+                    <input asp-for="AppCompanyDTO!.LogoFile" type="file" class="form-control-file" />
+                    <span class="text-danger" asp-validation-for="AppCompanyDTO!.LogoFile"></span>
+                </div>
+            </div>
+            <div class="col-5 border-left">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-4">
+                            <label asp-for="AppCompanyDTO!.ContractStartDate"><b class="text-warning">Sözleşme Başlangıç Tarihi* :</b></label>
+                            <input asp-for="AppCompanyDTO!.ContractStartDate" type="date" class="form-control" id="hire-date-input" />
+                            <span class="text-danger" asp-validation-for="AppCompanyDTO!.ContractStartDate"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppCompanyDTO!.ContractFinishDate"><b class="text-warning">Sözleşme Bitiş Tarihi :</b></label>
+                            <input asp-for="AppCompanyDTO!.ContractFinishDate" type="date" class="form-control" id="release-date-input" />
+                            <span class="text-danger" asp-validation-for="AppCompanyDTO!.ContractFinishDate"></span>
+                            <span class="text-danger">
+                                @Html.ValidationMessage("baslangicTarih")
+                                @Html.ValidationMessage("bitisTarih")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="AppCompanyDTO!.CompanyAddress"><b class="text-warning">Şirket Adresi* :</b></label>
+                    <textarea asp-for="AppCompanyDTO!.CompanyAddress" class="form-control" rows="3"></textarea>
+                    <span class="text-danger" asp-validation-for="AppCompanyDTO!.CompanyAddress"></span>
+                </div>
+            </div>
+            <div class="col-12 justify-content-center d-flex mt-5 mb-2">
+                <button onclick="giris()" class="btn btn-lg btn-primary m-3"><b>Şirket Güncelle</b></button>
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn btn-lg btn-secondary m-3"><b>Anasayfa</b></a>
+            </div>
+            <sub style="font-size:15px" class="mb-2 font-italic">(* : zorunlu alan)</sub>
+        </div>
+    </form>
+</div>
+
+@if (TempData.ContainsKey("sweetAlertMessage"))
+{
+    <div id="sweet">
+    </div>
+}
+
+
+@section Scripts{
+    <script>
+        // bekleme imleci
+        function giris() {
+            document.body.style.cursor = "wait";
+        };
+
+        function temizle() {
+            $('input[type="text"], input[type="email"], input[type="password"], input[type="date"], textarea').val('');
+
+
+            // gender dropdownlistin seçili elemanını sıfırlama
+            var selectListGender = document.getElementById("AppUserDTO_Gender"); // dropdownlistin id'si
+            selectListGender.selectedIndex = 0; // sıfırıncı elemanı seç
+
+            // department dropdownlistin seçili elemanını sıfırlama
+            var selectListDepartment = document.getElementById("AppUserDTO_Department"); // dropdownlistin id'si
+            selectListDepartment.selectedIndex = 0; // sıfırıncı elemanı seç
+        }
+
+        // sweetalert2 gösterilecek div
+        let sweetDiv = document.getElementById("sweet");
+
+        // sweetalert2 gösterme
+        sweetDiv.innerHTML(
+            Swal.fire({
+                title: '@TempData["sweetAlertMessage"]',
+                icon: '@TempData["sweetAlertType"]',
+                onClose: () => { },
+                didClose: () => {
+                    window.location.href = "/Admin/SirketListele/";
+                }
+            }),
+            temizle()
+        );
+
+        // telefon numarası formatı
+        function formatPhoneNumber(input) {
+            // Gelen numarayı (555) 555-55-55 formatına uygun hale getirir
+            let formatted = input.value.replace(/\D/g, '');
+            formatted = formatted.replace(/^(\d{3})(\d{3})(\d{2})(\d{2})$/, '($1) $2-$3-$4');
+            input.value = formatted;
+        }
+
+
+        // sadece sayı ve nokta girilmesini sağlar
+        function isNumberOrDotKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            var inputValue = evt.target.value;
+
+            // sadece sayılar ve en fazla bir virgül/nokta karakterine izin ver
+            if (charCode != 46 && charCode != 44 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                evt.preventDefault();
+                return false;
+            } else if ((charCode == 46 || charCode == 44) && (inputValue.indexOf(',') > -1)) {
+                evt.preventDefault();
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

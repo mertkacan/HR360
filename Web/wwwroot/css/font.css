@@ -1,0 +1,84 @@
+html {
+    font-family: 'Alkatra', cursive;
+    font-family: 'Lato', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    font-family: 'Alkatra', cursive;
+    font-family: 'Lato', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+
+.profil-foto{
+   height: 200px;
+   width: 200px;
+   max-width:200px;
+}
+
+
+
+.kucuk-profil-foto {
+    height: 50px;
+    width: 50px;
+    max-width: 50px;
+    object-fit:cover;
+}
+
+aktif {
+    background-color: midnightblue;
+}
+
+option {
+    color: black;
+}
+
+select option[disabled]:first-child {
+    color: #adb5bd;
+}
+
+
+/*dropdown*/
+.dropdown-submenu {
+    position: relative;
+}
+
+    .dropdown-submenu a::after {
+        transform: rotate(-90deg);
+        position: absolute;
+        right: 6px;
+        top: .8em;
+    }
+
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-left: .1rem;
+        margin-right: .1rem;
+    }
+
+/*dropdown*/
+
+.nav-link.active .nav-link {
+    background-color: rgb(2, 2, 2, 0.5);
+}
+
+.liste-foto {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+    
+.dataTables_wrapper .dataTables_paginate {
+    color: rgb(2, 2, 2, 0.5);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    color: white;
+}
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: white;
+}

@@ -1,0 +1,64 @@
+﻿@using Web.Models
+@using ApplicationCore.DTO
+@using Web.Extensions
+@model AdminViewModel
+
+
+<div class="card mx-auto shadow px-4 py-2 col-11" style="background-color: rgb(1, 26, 24, 0.70); ">
+
+    <h1 class="text-warning text-center">Yönetici Listesi</h1>
+    <table class="table text-white" id="yoneticiList">
+        <thead class="text-warning">
+            <tr>
+                <th>Foto</th>
+                <th>Ad Soyad</th>
+                <th>Şirket</th>
+                <th>Telefon</th>
+                <th>E-Mail</th>
+                <th>Departman</th>
+                <th>Detay</th>
+                <th>Güncelle</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var yonetici in Model.AppUsersDTOListe)
+            {
+                <tr class="">
+                    <td class="align-middle"> <img src="~/images/@yonetici.Picutre" class="img-fluid rounded-circle" style="height:100px; width:100px; object-fit:cover;" /> </td>
+                    <td class="align-middle">@yonetici.Name @yonetici.MiddleName @yonetici.Surname</td>
+                    <td class="align-middle">@yonetici.CompanyDTO!.CompanyName </td>
+                    <td class="align-middle">@yonetici.PhoneNumber</td>
+                    <td class="align-middle">@yonetici.Email</td>
+                    <td class="align-middle">@yonetici.Department!.GetDisplayName()</td>
+                    <td class="align-middle">
+                        <a asp-area="Admin" asp-controller="Admin" asp-action="YoneticiTumBilgi" asp-route-yoneticiEmail=@yonetici.Email class="btn btn-warning mr-3">Detay</a>
+                    </td>
+                    <td class="align-middle">
+
+                        <a asp-area="Admin" asp-controller="Admin" asp-action="YoneticiGuncelle" asp-route-yoneticiEmail=@yonetici.Email class="btn btn-info">Güncelle</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+@section Scripts{
+    <script>
+        let table = new DataTable('#yoneticiList', {
+            cellProps: {
+                textAlign: "center",
+            },
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json",
+            },
+
+            pageLength: 5,
+            "lengthChange": false,
+
+        });
+
+    </script>
+}

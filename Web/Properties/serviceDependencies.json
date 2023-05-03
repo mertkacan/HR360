@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:AppIdentityDbContextConnection"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:ApplicationDbContextConnection"
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "BaglantiCumlem"
+    },
+    "mssql4": {
+      "type": "mssql",
+      "connectionId": "BaglantiCumlemiz"
+    }
+  }
+}

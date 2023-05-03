@@ -1,0 +1,83 @@
+﻿@using Web.Models
+@using Web.Extensions
+@using System.Reflection
+@using System.ComponentModel.DataAnnotations
+
+@model YoneticiViewModel
+<div class="h-100">
+
+    <div class="d-flex align-items-center auth">
+        <div class="card col-11 mx-auto shadow p-4 px-5" style="background-color: rgb(0, 0, 0, 0.7);">
+            <div class="row">
+                <div class="">
+                    <div class="d-flex justify-content-around align-items-center">
+                        <div>
+                            <img src="~/images/@Model.AppUserDTO.Picutre" width="200" height="200" class="profil-foto rounded-circle" style="object-fit:cover" />
+                        </div>
+                        <div class="text-white m-4">
+                            <span class="display-3">@Model.AppUserDTO.Name @Model.AppUserDTO.MiddleName @Model.AppUserDTO.Surname @Model.AppUserDTO.SecondSurname</span>
+                            <br />
+                            <span class="ml-2 boder">Personel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* model *@
+
+            <h2 class="display-6 card-title text-left mb-3 mt-2 text-warning border-bottom pb-2">Personel Detaylı Bilgiler</h2>
+
+            <div class="row text-white mb-2">
+                <div class="col-5 ">
+                    @* model *@
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Mesleği :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppUserDTO.Job!.GetDisplayName() : "Amele")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Departman :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppUserDTO.Department!.GetDisplayName() : "İşsiz")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail">  <b class="text-warning">E-mail :</b> </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppUserDTO.Email : "example@example.com")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail">  <b class="text-warning">Adres :</b> </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppUserDTO.Address : "Belirsiz")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Telefon :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppUserDTO.PhoneNumber : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail">  <b class="text-warning">TC No :</b> </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppUserDTO.IdentityNumber : "00000000000")</span>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5 ">
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Doğum Yeri :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppUserDTO.PlaceOfBirth : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail">  <b class="text-warning">Şirket Adı :</b> </span>
+                    <span style="font-size:18px;">&nbsp;@(Model!.AppUserDTO.CompanyDTO != null ? Model.AppUserDTO.CompanyDTO.CompanyName : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">İşe Giriş Tarihi :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? (Model.AppUserDTO.HireDate)?.ToString("dd/MM/yyyy") : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">İşten Çıkış Tarihi :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null && Model!.AppUserDTO.ReleaseDate!.Value.Year != 2099 ? (Model.AppUserDTO.ReleaseDate)?.ToString("dd/MM/yyyy") : "-")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">İşte Aktiflik Durumu :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppUserDTO.IsActive ? "Aktif çalışıyor" : "Çalışmıyor" : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail">  <b class="text-warning">Cinsiyet :</b> </span>
+
+                    <span style="font-size:18px;">
+                        &nbsp;@(Model!.AppUserDTO.Gender != null ? Model.AppUserDTO.Gender.GetDisplayName() : "")
+                    </span>
+
+                </div>
+            </div>
+            <div class="d-flex justify-content-lg-around pb-4">
+
+                <a class="btn btn-lg btn-info mt-2" asp-area="Yonetici" asp-controller="Yonetici" asp-action="PersonelListele"><b>Geri</b></a>
+                <a asp-area="Yonetici" asp-controller="Home" asp-action="Index" class="btn btn-lg btn-primary mt-2"><b>Anasayfa</b></a>
+            </div>
+        </div>
+    </div>
+</div>

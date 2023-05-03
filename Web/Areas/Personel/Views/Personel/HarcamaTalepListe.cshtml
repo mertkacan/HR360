@@ -1,0 +1,306 @@
+﻿@using Web.Models
+@using ApplicationCore.DTO
+@using Web.Extensions
+@model PersonelViewModel
+
+
+
+<div class="d-flex align-items-center auth">
+   <div class="col-11 container text-white px-5 py-4" style="background-color: rgb(7, 3, 42, 0.80);">
+        <h2 class="display-4 card-title  text-warning  ">
+            <span class="display-4 card-title text-left mb-3 text-warning  pb-2">Harcama Listesi</span>
+            <span class="text-info float-right text-right">@Model.AppUserDTO.Name @Model.AppUserDTO.MiddleName @Model.AppUserDTO.Surname @Model.AppUserDTO.SecondSurname</span>
+
+        </h2>
+        <div class="ml-2 text-white text-right border-bottom mb-3 pb-2">Personel</div>
+
+
+        <div>
+
+            <button onclick="GosterOnayBekle(),degisOnayBekle()" class="btn btn-secondary text-white mb-2 w-100" style="font-size:large">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <b class="ml-2"><i class="fa-solid fa-person-circle-check mr-2"></i> Onay Bekleyen Harcamalar </b>
+                    <b id="ok">ᐁ</b>
+                </div>
+            </button>
+
+            <div id="icerikOnayBekle" style="display:none">
+                <table class="table table-hover" id="bekleyenList">
+                    <thead style="background-color: rgb(0, 0, 0, 0.6);">
+                        <tr class="text-warning justify-content-evenly align-items-center">
+                            <th>Harcama Türü</th>
+                            <th>Tutar</th>
+                            <th>Para Birimi</th>
+                            <th>Onay Durumu</th>
+                            <th>Talep Tarihi</th>
+                            <th>Cevaplama Tarihi</th>
+                            <th>Dosya</th>
+                            <th>Açıklama</th>
+                            <th>İptal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            @if (Model.AppExpenseDTOListe != null)
+                            {
+                                foreach (var talep in Model.AppExpenseDTOListe)
+                                {
+                                    if (talep.Approval == ApplicationCore.Enums.Approval.OnayBekliyor)
+                                    {
+                                        <tr class="text-light">
+                                            <td class="align-middle">@talep.TypeOfExpenses</td>
+                                            <td class="align-middle">@talep.ExpenseAmount</td>
+                                            <td class="align-middle">@talep.Currency</td>
+                                            <td class="align-middle">@talep.Approval.GetDisplayName()</td>
+                                            <td class="align-middle">@talep.CreationDate.ToString()</td>
+                                            <td class="align-middle text-center">
+                                                @(talep.ApprovalDate == null ?
+                                                Html.Raw("<i class=\"fa-solid fa-clock\"></i>") :
+                                                talep.ApprovalDate)
+                                            </td>
+
+                                            <td class="align-middle">
+                                                <a asp-action="ShowFile" asp-controller="Personel" asp-route-file="@talep.PictureName" class="btn btn-outline-info" target="_blank">Fatura Göster</a>
+                                            </td>
+                                            <td class="align-middle">@talep.Description</td>
+                                            <td><button class="btn btn-danger" onclick="deleteExpense('@talep.Id')"><i class="fa-solid fa-times"></i></button></td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <button onclick="GosterOnay(),degisOnay()" class="btn btn-success text-white mb-2 w-100" style="font-size:large">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <b class="ml-2"><i class="fa-solid fa-thumbs-up mr-2"></i> Onaylanan Harcamalar </b>
+                    <b id="ok2" onclick="">ᐁ</b>
+                </div>
+            </button>
+
+
+            <div id="icerikOnay" style="display:none">
+                <table class="table table-hover" id="onayList">
+                    <thead style="background-color: rgb(0, 0, 0, 0.6);">
+                        <tr class="text-warning">
+                            <th>Harcama Türü</th>
+                            <th>Tutar</th>
+                            <th>Para Birimi</th>
+                            <th>Onay Durumu</th>
+                            <th>Harcama Talep Tarihi</th>
+                            <th>Cevaplama Tarihi</th>
+                            <th>Dosya</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            @if (Model.AppExpenseDTOListe != null)
+                            {
+                                foreach (var talep in Model.AppExpenseDTOListe)
+                                {
+                                    if (talep.Approval == ApplicationCore.Enums.Approval.Onaylandi)
+                                    {
+                                        <tr class="text-light">
+                                            <td>@talep.TypeOfExpenses</td>
+                                            <td>@talep.ExpenseAmount</td>
+                                            <td>@talep.Currency</td>
+                                            <td>@talep.Approval.GetDisplayName()</td>
+                                            <td>@talep.CreationDate.ToString()</td>
+                                            <td>@(talep.ApprovalDate == null ? "-----" : talep.ApprovalDate)</td>
+                                            <td class="align-middle">
+                                                <a asp-action="ShowFile" asp-controller="Personel" asp-route-file="@talep.PictureName" class="btn btn-outline-info" target="_blank">Fatura Göster</a>
+                                            </td>
+                                            <td>@talep.Description</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+
+
+            <button onclick="GosterRed(),degisRed()" class="btn btn-danger text-white mb-2 w-100" style="font-size:large">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <b class="ml-2"><i class="fa-solid fa-thumbs-down mr-2"></i> Reddedilen Harcamalar </b>
+                    <b id="ok3" onclick="">ᐁ</b>
+                </div>
+            </button>
+
+            <div id="icerikRed" style="display:none">
+                <table class="table table-hover" id="redList">
+                    <thead style="background-color: rgb(0, 0, 0, 0.6);">
+                        <tr class="text-warning">
+                            <th>Harcama Türü</th>
+                            <th>Tutar</th>
+                            <th>Para Birimi</th>
+                            <th>Onay Durumu</th>
+                            <th>Harcama Talep Tarihi</th>
+                            <th>Cevaplama Tarihi</th>
+                            <th>Açıklama</th>
+                            <th>Reddedilme Sebebi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            @if (Model.AppExpenseDTOListe != null)
+                            {
+                                foreach (var talep in Model.AppExpenseDTOListe)
+                                {
+                                    if (talep.Approval == ApplicationCore.Enums.Approval.Reddedildi)
+                                    {
+                                        <tr class="text-light">
+                                            <td>@talep.TypeOfExpenses</td>
+                                            <td>@talep.ExpenseAmount</td>
+                                            <td>@talep.Currency</td>
+                                            <td>@talep.Approval.GetDisplayName()</td>
+                                            <td>@talep.CreationDate.ToString()</td>
+                                            <td>@(talep.ApprovalDate == null ? "-----" : talep.ApprovalDate)</td>
+                                            <td>@talep.Description</td>
+                                            <td>@talep.ManagerDescription</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (TempData.ContainsKey("sweetMessage"))
+{
+    <div id="sweet" class="text-warning">
+    </div>
+}
+
+
+@section Scripts{
+    <script>
+        // bekleyen datatable
+        let bekleyenTable = new DataTable('#bekleyenList', {
+            cellProps: {
+                textAlign: "center",
+            },
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json",
+            },
+
+            pageLength: 8,
+            "lengthChange": false,
+        });
+
+        // onay datatable
+        let onayTable = new DataTable('#onayList', {
+            cellProps: {
+                textAlign: "center",
+            },
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json",
+            },
+
+            pageLength: 8,
+            "lengthChange": false,
+        });
+
+        // red datatable
+        let redTable = new DataTable('#redList', {
+            cellProps: {
+                textAlign: "center",
+            },
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json",
+            },
+
+            pageLength: 8,
+            "lengthChange": false,
+        });
+
+        window.onload = function () {
+            sweet();
+        };
+     
+
+        function sweet() {
+             // sweetalert2 gösterilecek div
+            let sweetDiv = document.getElementById("sweet");
+            // sweetalert2 gösterme
+            sweetDiv.innerHTML(
+                Swal.fire({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    title: '@TempData["sweetMessage"]',
+                    icon: '@TempData["sweetType"]'
+                })
+            );
+        }
+
+
+
+        function GosterOnayBekle() {
+            $("#icerikOnayBekle").toggle("fast");
+        }
+        function GosterOnay() {
+            $("#icerikOnay").toggle("fast");
+        }
+        function GosterRed() {
+            $("#icerikRed").toggle("fast");
+        }
+        function degisOnayBekle() {
+            var symbol = document.getElementById("ok");
+            if (symbol.innerHTML === "ᐁ") {
+                symbol.innerHTML = "ᐊ";
+            } else {
+                symbol.innerHTML = "ᐁ";
+            }
+        }
+        function degisOnay() {
+            var symbol = document.getElementById("ok2");
+            if (symbol.innerHTML === "ᐁ") {
+                symbol.innerHTML = "ᐊ";
+            } else {
+                symbol.innerHTML = "ᐁ";
+            }
+        }
+        function degisRed() {
+            var symbol = document.getElementById("ok3");
+            if (symbol.innerHTML === "ᐁ") {
+                symbol.innerHTML = "ᐊ";
+            } else {
+                symbol.innerHTML = "ᐁ";
+            }
+        }
+
+
+        function deleteExpense(expenseId) {
+            let url = "/Personel/Delete/" + expenseId;
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (result) {
+                    window.location.href = "/Personel/HarcamaTalepListe/"
+                    }
+                });
+        }
+
+
+    </script>
+}

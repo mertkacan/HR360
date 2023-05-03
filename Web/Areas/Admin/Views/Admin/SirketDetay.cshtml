@@ -1,0 +1,74 @@
+﻿@using Web.Models
+@using Web.Extensions
+@using System.Reflection
+@using System.ComponentModel.DataAnnotations
+
+@model AdminViewModel
+<div class="h-100">
+
+    <div class="d-flex align-items-center auth">
+        <div class="card mx-auto shadow px-4 py-2 col-11" style="background-color: rgb(1, 26, 24, 0.70); ">
+            <div class="row">
+                <div class="">
+                    <div class="d-flex justify-content-around align-items-center">
+                        <div>
+                            <img src="~/images/@Model.AppCompanyDTO!.Logo" width="200" height="200" class="profil-foto rounded-circle" style="object-fit:cover" />
+                        </div>
+                        <div class="text-white m-4">
+                            <span class="display-3">@Model.AppCompanyDTO.CompanyName @Model.AppCompanyDTO.CompanyStatus!.GetDisplayName()</span>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* model *@
+
+            <h2 class="display-6 card-title text-left mb-3 mt-2 text-warning border-bottom pb-2">Şirket Detaylı Bilgiler</h2>
+
+            <div class="row text-white mb-2">
+                <div class="col-5 ">
+                    @* model *@
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Mersis No :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppCompanyDTO.MersisNumarasi!: "Amele")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Vergi No :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppCompanyDTO.VergiNumarasi! : "İşsiz")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail">  <b class="text-warning">Vergi Dairesi :</b> </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppCompanyDTO.VergiDairesi : "example@example.com")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail">  <b class="text-warning">Şirket Tel. No :</b> </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppCompanyDTO.CompanyPhoneNumber : "Belirsiz")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Şirket Adresi :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppCompanyDTO.CompanyAddress : "00000000000")</span>
+                    <hr />
+
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5 ">
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Çalışan Sayısı :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppCompanyDTO.PersonnelAmount : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Sözleşme Başlangıç Tarihi :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? (Model.AppCompanyDTO.ContractStartDate)?.ToString("dd/MM/yyyy") : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Sözleşme Bitiş Tarihi :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? (Model.AppCompanyDTO.ContractFinishDate)?.ToString("dd/MM/yyyy") : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail"> <b class="text-warning">Şirket Aktiflik Durumu :</b>  </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppCompanyDTO.IsActive == true ? "Aktif çalışıyor" : "Çalışmıyor" : "00000000000")</span>
+                    <hr />
+                    <span style="font-size:18px;" class="mdi mdi-contact-mail">  <b class="text-warning">Şirket Maili :</b> </span>
+                    <span style="font-size:18px;">&nbsp;@(Model != null ? Model.AppCompanyDTO.CompanyMail : "00000000000")</span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-lg-around pb-4">
+
+                <a class="btn btn-lg btn-info mt-2" asp-area="Admin" asp-controller="Admin" asp-action="SirketListele"><b>Geri</b></a>
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn btn-lg btn-primary mt-2"><b>Anasayfa</b></a>
+            </div>
+        </div>
+    </div>
+</div>

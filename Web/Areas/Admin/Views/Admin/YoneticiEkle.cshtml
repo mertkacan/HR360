@@ -1,0 +1,246 @@
+﻿@using ApplicationCore.DTO
+@using ApplicationCore.Enums
+@using Web.Extensions
+@model AdminViewModel
+
+@inject ApplicationCore.Interfaces.ICompanyService CompanyService
+
+<div class="card mx-auto shadow px-4 py-2 col-11" style="background-color: rgb(1, 26, 24, 0.70); ">
+    <h1 class="text-warning text-center mb-4 border-bottom pb-2">Yönetici Ekle</h1>
+    <form asp-area="Admin" asp-controller="Admin" asp-action="YoneticiEkle" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-5 border-right">
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.Name"><b class="text-warning">Ad* : </b></label>
+                            <input asp-for="AppUserDTO.Name" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.Name"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.MiddleName"><b class="text-warning">İkinci Ad :</b></label>
+                            <input asp-for="AppUserDTO.MiddleName" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.MiddleName"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.Surname"><b class="text-warning">Soyad* :</b></label>
+                            <input asp-for="AppUserDTO.Surname" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.Surname"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.SecondSurname"><b class="text-warning">İkinci Soyad :</b></label>
+                            <input asp-for="AppUserDTO.SecondSurname" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.SecondSurname"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.BirthDate"><b class="text-warning">Doğum Tarihi* :</b></label>
+                            <input asp-for="AppUserDTO.BirthDate" type="date" class="form-control  text-white" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.BirthDate"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.PlaceOfBirth"><b class="text-warning">Doğum Yeri* :</b></label>
+                            <input asp-for="AppUserDTO.PlaceOfBirth" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.PlaceOfBirth"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.IdentityNumber"><b class="text-warning">Tc No* :</b></label>
+                            <input asp-for="AppUserDTO.IdentityNumber" type="text" class="form-control" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.IdentityNumber"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phoneNumber"><b class="text-warning">Tel. No* :</b></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0" style="background-color:rgb(255, 255, 255, 0.2); color:white; border-radius:60% 0 0 60%">+90</span>
+                                </div>
+                                <input asp-for="AppUserDTO.PhoneNumber" oninput="formatPhoneNumber(this)" type="tel" class="form-control border-left" id="phoneNumber" placeholder="(XXX)-XXX-XX-XX">
+                            </div>
+                            <div>
+                                <span asp-validation-for="AppUserDTO.PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-4">
+                    <label asp-for="AppUserDTO.Resim"><b class="text-warning">Resim :</b></label>
+                    <input asp-for="AppUserDTO.Resim" type="file" class="form-control-file" />
+                    <span class="text-danger" asp-validation-for="AppUserDTO.Resim"></span>
+                </div>
+                <div>
+
+                    @{
+                        var companyList = Model.AppCompanyDTOListe.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.CompanyName });
+                    }
+
+                    <div class="mb-3">
+                        <label asp-for="AppCompanyDTO!"><b class="text-warning">Şirket* :</b></label>
+                        <div class="">
+                            @Html.DropDownListFor(x => x.AppCompanyDTOId, companyList, "Şirket Seçiniz", new { @class = "form-control text-dark" })
+                        </div>
+                        <span class="text-danger" asp-validation-for="AppCompanyDTO"></span>
+                        <span class="text-danger">@Html.ValidationMessage("company")</span>
+                    </div>
+                        
+
+                </div>
+            </div>
+            <div class="col-5 border-left">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO!.HireDate"><b class="text-warning">İşe Giriş Tarihi* :</b></label>
+                            <input asp-for="AppUserDTO!.HireDate" type="date" class="form-control" id="hire-date-input" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.HireDate"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.ReleaseDate"><b class="text-warning">İşten Çıkış Tarihi :</b></label>
+                            <input asp-for="AppUserDTO.ReleaseDate" type="date" class="form-control" id="release-date-input" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.ReleaseDate"></span>
+                            <span class="text-danger">
+                                @Html.ValidationMessage("girisTarih")
+                                @Html.ValidationMessage("cikisTarih")
+                            </span>
+                        </div>
+
+                        @{
+                            var departmentList = Html.GetEnumSelectList<Department>().ToList();
+                            departmentList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+                        }
+                        <div class="mb-3">
+                            <label asp-for="AppUserDTO.Department"><b class="text-warning">Departman* :</b></label>
+                            <div class="">
+                                @Html.DropDownListFor(x => x.AppUserDTO.Department, departmentList, new { @class = "form-control text-dark" })
+                            </div>
+                            <span class="text-danger" asp-validation-for="AppUserDTO.Department"></span>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-6">
+
+                        @{
+                            var jobList = Html.GetEnumSelectList<Job>().ToList();
+                            jobList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+                        }
+                        <div class="mb-3">
+                            <label asp-for="AppUserDTO.Job"><b class="text-warning">Meslek* :</b></label>
+                            <div class="">
+                                @Html.DropDownListFor(x => x.AppUserDTO.Job, jobList, new { @class = "form-control text-dark" })
+                            </div>
+                            <span class="text-danger" asp-validation-for="AppUserDTO.Job"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="AppUserDTO.Salary"><b class="text-warning">Maaş* :</b></label>
+                            <input asp-for="AppUserDTO.Salary" type="text" class="form-control" onkeypress="return isNumberOrDotKey(event)" />
+                            <span class="text-danger" asp-validation-for="AppUserDTO.Salary"></span>
+                        </div>
+
+
+                        @{
+                            var genderList = Html.GetEnumSelectList<Gender>().ToList();
+                            genderList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+                        }
+                        <div class="mb-3">
+                            <label asp-for="AppUserDTO.Gender"><b class="text-warning">Cinsiyeti* :</b></label>
+                            <div class="">
+                                @Html.DropDownListFor(x => x.AppUserDTO.Gender, genderList, new { @class = "form-control text-dark" })
+                            </div>
+                            <span class="text-danger" asp-validation-for="AppUserDTO.Gender"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="AppUserDTO.Address"><b class="text-warning">Adres* :</b></label>
+                    <textarea asp-for="AppUserDTO.Address" class="form-control" rows="3"></textarea>
+                    <span class="text-danger" asp-validation-for="AppUserDTO.Address"></span>
+                </div>
+            </div>
+
+            <div class="col-12 justify-content-center d-flex mt-5 mb-2">
+                <button onclick="giris()" class="btn btn-lg btn-primary m-3"><b>Yönetici Ekle</b></button>
+                <a asp-area="Yonetici" asp-controller="Home" asp-action="Index" class="btn btn-lg btn-secondary m-3"><b>Anasayfa</b></a>
+            </div>
+            <sub style="font-size:15px" class="mb-2 font-italic">(* : zorunlu alan)</sub>
+        </div>
+    </form>
+</div>
+
+@if (TempData.ContainsKey("sweetAlertMessage"))
+{
+    <div id="sweet">
+    </div>
+}
+
+
+@section Scripts{
+    <script>
+        // bekleme imleci
+        function giris() {
+            document.body.style.cursor = "wait";
+        };
+
+        function temizle() {
+            $('input[type="text"], input[type="email"], input[type="password"], input[type="date"], textarea').val('');
+
+
+            // gender dropdownlistin seçili elemanını sıfırlama
+            var selectListGender = document.getElementById("AppUserDTO_Gender"); // dropdownlistin id'si
+            selectListGender.selectedIndex = 0; // sıfırıncı elemanı seç
+
+            // department dropdownlistin seçili elemanını sıfırlama
+            var selectListDepartment = document.getElementById("AppUserDTO_Department"); // dropdownlistin id'si
+            selectListDepartment.selectedIndex = 0; // sıfırıncı elemanı seç
+        }
+
+        // sweetalert2 gösterilecek div
+        let sweetDiv = document.getElementById("sweet");
+
+        // sweetalert2 gösterme
+        sweetDiv.innerHTML(
+            Swal.fire({
+                title: '@TempData["sweetAlertMessage"]',
+                icon: '@TempData["sweetAlertType"]',
+                onClose: () => { },
+                didClose: () => {
+                    window.location.href = "/Admin/YoneticiListele/";
+                }
+            }),
+            temizle()
+        );
+
+        // telefon numarası formatı
+        function formatPhoneNumber(input) {
+            // Gelen numarayı (555) 555-55-55 formatına uygun hale getirir
+            let formatted = input.value.replace(/\D/g, '');
+            formatted = formatted.replace(/^(\d{3})(\d{3})(\d{2})(\d{2})$/, '($1) $2-$3-$4');
+            input.value = formatted;
+        }
+
+
+        // sadece sayı ve nokta girilmesini sağlar
+        function isNumberOrDotKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            var inputValue = evt.target.value;
+
+            // sadece sayılar ve en fazla bir virgül/nokta karakterine izin ver
+            if (charCode != 46 && charCode != 44 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                evt.preventDefault();
+                return false;
+            } else if ((charCode == 46 || charCode == 44) && (inputValue.indexOf(',') > -1)) {
+                evt.preventDefault();
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

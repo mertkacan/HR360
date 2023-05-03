@@ -1,0 +1,57 @@
+﻿@using ApplicationCore.DTO
+@model AppUserDTO
+
+<div class="container col-11 text-white px-5 py-4" style="background-color: rgb(7, 3, 42, 0.80);">
+    <h2 class="text-warning mt-3 display-4 border-bottom pb-2">
+        <span class="text-white">Merhaba, <span class="text-info">@Model.Name @Model.MiddleName @Model.Surname @Model.SecondSurname</span> </span>
+        <br />
+        Bilgilerini Güncelle
+    </h2>
+    <form asp-area="Personel" asp-controller="Personel" asp-action="BilgileriDuzenle" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="@Model.Picutre" />
+        <input type="hidden" asp-for="@Model.Email" />
+
+        <div class="mb-4">
+            <label asp-for="@Model.Address"><b class="text-warning">Adres :</b> </label>
+            <input asp-for="@Model.Address" type="text" class="form-control" />
+            <span class="text-danger" asp-validation-for="@Model.Address"></span>
+        </div>
+        <hr class="bg-white" />
+        <div class="form-group">
+            <label for="phoneNumber"><b class="text-warning">Tel. No* :</b></label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0" style="background-color:rgb(255, 255, 255, 0.2); color:white; border-radius:60% 0 0 60%">+90</span>
+                </div>
+                <input asp-for="@Model.PhoneNumber" value="@Model.PhoneNumber.Substring(4)" oninput="formatPhoneNumber(this)" type="tel" class="form-control border-left" id="phoneNumber" placeholder="(XXX)-XXX-XX-XX">
+            </div>
+            <div>
+                <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <hr class="bg-white" />
+        <div class="mb-4">
+            <label asp-for="Resim"><b class="text-warning">Fotoğraf :</b></label>
+            <input asp-for="Resim" type="file" class="form-control-file" />
+            <span class="text-danger" asp-validation-for="Resim"></span>
+        </div>
+        <hr class="bg-white" />
+        <div class="d-flex justify-content-around p-4">
+            <button class="btn btn-lg btn-info mt-2"><b>Güncelle</b></button>
+            <a asp-area="Personel" asp-controller="Personel" asp-action="Index" class="btn btn-lg btn-primary mt-2"><b>Anasayfa</b></a>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        // telefon numarası formatı
+        function formatPhoneNumber(input) {
+            // Gelen numarayı (555) 555-55-55 formatına uygun hale getirir
+            let formatted = input.value.replace(/\D/g, '');
+            formatted = formatted.replace(/^(\d{3})(\d{3})(\d{2})(\d{2})$/, '($1) $2-$3-$4');
+            input.value = formatted;
+        }
+    </script>
+}

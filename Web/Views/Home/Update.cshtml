@@ -1,0 +1,63 @@
+﻿@model UpdateAccountViewModel
+
+<div class="content-wrapper d-flex align-items-center">
+    <div class="rounded container shadow w-50  p-4" style="background-color: rgb(0, 0, 0, 0.6);">
+        <h1 class="text-white">@Model.NameSurname</h1>
+        <h3 class="text-info mb-2">Şifrenizi Değiştirin</h3>
+
+        <div class="col-12 d-flex btn justify-content-end">
+            <button type="button" onclick="showPassword()" class="p-2 btn btn-outline-secondary">
+                <i class="fa fa-eye field-icon text-white position-static" style="display:inline"></i>
+                <span class="ml-2 text-white">Şifreleri Göster</span>
+            </button>
+        </div>
+
+        <form method="post" class="text-warning" asp-action="Update">
+
+            <div class="mb-2">
+                <label asp-for="CurrentPassword">Mevcut Şifre</label>
+                <div class="form-group">
+                    <input asp-for="CurrentPassword" type="password" class="form-control password" placeholder="Password">
+                    <span class="text-danger">
+                        @Html.ValidationMessage("pwerror")
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="mb-2">
+                <label asp-for="Password">Yeni Şifrenizi Giriniz</label>
+                <div class="form-group">
+                    <input asp-for="Password" type="password" class="form-control password" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <span class="text-danger"> @Html.ValidationMessage("pwformat")</span>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="ConfirmPassword">Yeni Şifrenizi Tekrar Giriniz</label>
+                <div class="form-group">
+                    <input asp-for="ConfirmPassword" type="password" class="form-control password" placeholder="Password">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary mt-3">Şifreyi Değiştir</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // şifre gösterme
+        function showPassword() {
+            var passwordInput = $(".password");
+
+            if (passwordInput.prop("type") === "password")
+                passwordInput.prop("type", "text");
+            else
+                passwordInput.prop("type", "password");
+        }
+
+    </script>
+}

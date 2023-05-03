@@ -1,0 +1,139 @@
+﻿@model LoginViewModel
+
+
+<div class="container shadow w-50 pb-5" style="background-color: rgb(0, 0, 0, 0.4);">
+    <div class="row justify-content-center h-100">
+        <div class="col-md-6 text-center mb-3 mt-3 d-flex justify-content-center align-items-center ">
+            <img src="https://flowbite.com/docs/images/logo.svg" alt="Flowbite Logo" />
+            <h2 class="heading-section mt-2 px-2"><b class="text-warning "> HR360</b></h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="login-wrap p-0">
+                <h3 class="mb-4 text-center text-white">Giriş Sayfası</h3>
+                <form method="post" class="signin-form" asp-area="" asp-controller="Home" asp-action="Index" id="frmLogin">
+                    <div class="form-group">
+                        <input name="Email" id="email" type="text" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="Password" id="password" type="password" class="form-control" placeholder="Password">
+                        <button type="button" onclick="showPassword()" class="d-flex">
+                            <span toggle="#password-field" class="fa fa-eye field-icon toggle-password text-dark"></span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <button onclick="giris()" class="form-control btn btn-primary submit px-3"><b style="font-size:large">Giriş Yap</b></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <span class="text-danger" style="background-color: rgb(0, 0, 0, 0.4);">
+            @Html.ValidationMessage("loginError")
+        </span>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        const frmLogin = document.getElementById("frmLogin");
+        // form submit edildiğinde login fonksiyonu çalışır
+        frmLogin.onsubmit = function (event) {
+            event.preventDefault();
+            login();
+        }
+
+        // bu fonksiyon ajax ile verileri kontrol eder
+        function login() {
+            let txtEmail = document.getElementById("email");
+            let email = txtEmail.value.trim();
+
+            let txtPassword = document.getElementById("password");
+            let password = txtPassword.value.trim();
+
+            const loginModel = {
+                email: email,
+                password: password
+            };
+
+            // ajax ile verileri kontrol eder
+            let url = "/Home/Index";
+
+            $.ajax({
+                type: "POST", // metot türü
+                url: url, // verinin gideceği adres
+                data: loginModel, // giden veri
+
+                // işlemler başarılıysa success'e girer dönen cevap int 0 olursa başarısız
+                success: function (data) {
+
+                    if (data == "Yonetici" || data == "Personel" || data == "PersonelUpdate" || data == "Admin") {
+
+
+                        Swal.fire({
+                            title: 'Giriş Başarılı',
+                            icon: 'success',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            onClose: () => { },
+                            didClose: () => {
+
+                                if (data == "Yonetici") {
+                                    window.location.href = "/Yonetici/";
+
+                                } else if (data == "Personel") {
+                                    window.location.href = "/Personel/";
+
+                                } else if (data == "PersonelUpdate") {
+                                    window.location.href = "/AccountUpdate/" + loginModel.email;
+
+                                } else if (data == "Admin") {
+                                    window.location.href = "/Admin/";
+                                }
+
+                            }
+                        });
+                    }
+
+                    else
+                        // işlem başarılı değilse error'a girer
+                        Swal.fire({
+                            title: 'Giriş başarısız. Email veya şifre hatalı',
+                            icon: 'error',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            onClose: () => { },
+                            didClose: () => {
+
+                                document.body.style.cursor = "default";
+                            }
+                        });
+                }
+
+            });
+        }
+
+        // bekleme imleci
+        function giris() {
+            document.body.style.cursor = "wait";
+        };
+
+        // şifre gösterme
+        function showPassword() {
+            var passwordInput = document.getElementById("password");
+
+            if (passwordInput.type === "password")
+                passwordInput.type = "text";
+
+            else
+                passwordInput.type = "password";
+
+        }
+    </script>
+}
+
+

@@ -1,0 +1,127 @@
+﻿@using ApplicationCore.DTO
+@using ApplicationCore.Enums
+@using Microsoft.AspNetCore.Mvc.RazorPages
+
+@model PersonelViewModel
+
+@{
+    ViewData["Title"] = "Avans Talep Et";
+}
+
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="container col-11 text-white px-5 py-2 my-2 d-flex justify-content-center align-items-center" style="background-color: rgb(7, 3, 42, 0.80);">
+        <b class="display-1 text-danger mr-4">&times;</b>
+        <div asp-validation-summary="All" class="text-danger fs-5 d-flex justify-content-center mt-2" style="font-size:20px;"></div>
+    </div>
+}
+
+<div class="container col-11 text-white px-5 py-4" style="background-color: rgb(7, 3, 42, 0.80);">
+    <h2 class="display-4 card-title  text-warning">
+        <span class="display-4 card-title text-left mb-3 text-warning  pb-2">Avans Talep Et</span>
+        <span class="text-info float-right text-right">@Model.AppUserDTO!.Name @Model.AppUserDTO.MiddleName @Model.AppUserDTO.Surname @Model.AppUserDTO.SecondSurname</span>
+
+    </h2>
+    <div class="ml-2 text-white text-right border-bottom mb-3 pb-2">Personel</div>
+    <form method="post" enctype="multipart/form-data" class="">
+        <div class="pl-lg-4">
+            <div class="form-group">
+                <label class="form-control-label text-warning" asp-for="AppAdvanceDTO!.AdvanceAmount">Avans Tutarı</label><br />
+
+                <input type="text" asp-for="AppAdvanceDTO!.AdvanceAmount" class="form-control mt-1"
+                       data-val="true" data-val-required="Lütfen bir sayı giriniz"
+                       oninvalid="this.setCustomValidity('Lütfen bir sayı giriniz')"
+                       oninput="this.setCustomValidity('')"
+                       onkeypress="return isNumberOrDotKey(event)" />
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            <div class="form-group">
+                <label class="form-control-label text-warning" asp-for="AppAdvanceDTO!.Description">Avans Açıklaması</label><br />
+                <textarea asp-for="AppAdvanceDTO!.Description" rows="3" class="form-control mt-1" placeholder="(Ör. Konaklama için avans talep)"></textarea>
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            @{
+                var currencyList = Html.GetEnumSelectList<Currency>().ToList();
+                currencyList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+            }
+            <div class="mb-3">
+                <label asp-for="AppAdvanceDTO!.Currency"><span class="text-warning">Para Birimi* :</span></label>
+                <div class="">
+                    @Html.DropDownListFor(x => x.AppAdvanceDTO!.Currency, currencyList, new { @class = "form-control text-dark" })
+                </div>
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            @{
+                var typeList = Html.GetEnumSelectList<TypeOfAdvance>().ToList();
+                typeList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+            }
+            <div class="mb-3">
+                <label asp-for="AppAdvanceDTO!.TypeOfAdvance"><span class="text-warning">Avans Türü* :</span></label>
+                <div class="">
+                    @Html.DropDownListFor(x => x.AppAdvanceDTO!.TypeOfAdvance, typeList, new { @class = "form-control text-dark" })
+                </div>
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            <div class="row">
+                <div class="col-lg-6 d-flex justify-content-around">
+                    <button type="submit" value="Avans İste" class="btn btn-m btn-success ml-0">Avans İste</button>
+                    <div>Kalan Avans Limiti: <span>@((Model.AppUserDTO.Salary * 3) - Model.AppUserDTO.AdvanceSpent) ₺</span> </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+@if (TempData.ContainsKey("sweetAlertMessage"))
+{
+    <div id="sweet">
+    </div>
+}
+
+
+
+
+@section Scripts{
+    <script>
+        let sweetDiv = document.getElementById("sweet");
+
+        // sweetalert2 gösterme
+        sweetDiv.innerHTML(
+            Swal.fire({
+                title: '@TempData["sweetAlertMessage"]',
+                icon: '@TempData["sweetAlertType"]',
+
+                didClose: () => {
+                    window.location.href = "/Personel/AvansListele/";
+                }
+            }),
+            temizle()
+        );
+
+
+
+        // maaş formatı
+        function isNumberOrDotKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            var inputValue = evt.target.value;
+
+            // sadece sayılar ve en fazla bir virgül/nokta karakterine izin ver
+            if (charCode != 46 && charCode != 44 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                evt.preventDefault();
+                return false;
+            } else if ((charCode == 46 || charCode == 44) && (inputValue.indexOf(',') > -1)) {
+                evt.preventDefault();
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+}

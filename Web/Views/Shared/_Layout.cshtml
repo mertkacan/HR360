@@ -1,0 +1,52 @@
+﻿<!doctype html>
+<html lang="tr">
+<head>
+    <title>HR360</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css" integrity="sha512-LX0YV/MWBEn2dwXCYgQHrpa9HJkwB+S+bnBpifSOTO1No27TqNMKYoAn6ff2FBh03THAzAiiCwQ+aPX+/Qt/Ow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400;500;600;700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+
+    @* dropwdown *@
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/font.css" rel="stylesheet" />
+</head>
+<body class="img js-fullheight" style="background-image: url(/images/bg.jpg); height:100vh;">
+    <header>
+
+        <nav class=" container-fluid">
+            <div class="flex flex-wrap justify-between items-center  p-4">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center">
+                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-1 " alt="Flowbite Logo" />
+                    <span class="self-center text-2xl text-warning font-semibold whitespace-nowrap dark:text-white "><b>HR360</b></span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="ftco-section">
+        @RenderBody()
+    </main>
+
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
+

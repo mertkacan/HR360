@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql4": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/webdbserver36/databases/Hr360IdentityDb",
+      "type": "mssql.azure",
+      "connectionId": "BaglantiCumlemiz"
+    }
+  }
+}

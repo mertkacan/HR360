@@ -1,0 +1,131 @@
+﻿@using ApplicationCore.DTO
+@using ApplicationCore.Enums
+@model PersonelViewModel
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+<div class="container col-11 text-white px-5 py-4" style="background-color: rgb(7, 3, 42, 0.80);">
+
+    <h2 class="display-4 card-title  text-warning  ">
+        <span class="display-4 card-title text-left mb-3 text-warning  pb-2">Harcama Talep Et</span>
+        <span class="text-info float-right text-right">@Model.AppUserDTO!.Name @Model.AppUserDTO.MiddleName @Model.AppUserDTO.Surname @Model.AppUserDTO.SecondSurname</span>
+
+    </h2>
+    <div class="ml-2 text-white text-right border-bottom mb-3 pb-2">Personel</div>
+    <form method="post" enctype="multipart/form-data" class="">
+        <div class="pl-lg-4">
+            <div class="form-group">
+                <label class="form-control-label text-warning" asp-for="AppExpenseDTO!.ExpenseAmount">Harcama Tutarı</label><br />
+
+                <input type="text" asp-for="AppExpenseDTO!.ExpenseAmount" class="form-control mt-1"
+                       data-val="true" data-val-required="Lütfen bir sayı giriniz"
+                       oninvalid="this.setCustomValidity('Lütfen bir sayı giriniz')"
+                       oninput="this.setCustomValidity('')"
+                       onkeypress="return isNumberOrDotKey(event)" />
+                <span asp-validation-for="AppExpenseDTO!.ExpenseAmount" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            <div class="form-group">
+                <label class="form-control-label text-warning" asp-for="AppExpenseDTO!.Description">Harcama Açıklaması</label><br />
+                <textarea asp-for="AppExpenseDTO!.Description" rows="3" class="form-control mt-1" placeholder="(Ör. İş için konaklama)"></textarea>
+                <span asp-validation-for="AppExpenseDTO!.Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            @{
+                var currencyList = Html.GetEnumSelectList<Currency>().ToList();
+                currencyList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+            }
+            <div class="mb-3">
+                <label asp-for="AppExpenseDTO!.Currency"><span class="text-warning">Para Birimi* :</span></label>
+                <div class="">
+                    @Html.DropDownListFor(x => x.AppExpenseDTO!.Currency, currencyList, new { @class = "form-control text-dark" })
+                </div>
+                <span class="text-danger" asp-validation-for="AppExpenseDTO!.Currency"></span>
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            @{
+                var typeList = Html.GetEnumSelectList<TypeOfExpenses>().ToList();
+                typeList.Insert(0, new SelectListItem { Text = "Seçiniz", Value = "" });
+            }
+            <div class="mb-3">
+                <label asp-for="AppExpenseDTO!.TypeOfExpenses"><span class="text-warning">Harcama Türü* :</span></label>
+                <div class="">
+                    @Html.DropDownListFor(x => x.AppExpenseDTO!.TypeOfExpenses, typeList, new { @class = "form-control text-dark" })
+                </div>
+                <span class="text-danger" asp-validation-for="AppExpenseDTO!.TypeOfExpenses"></span>
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label class="form-control-label text-warning" asp-for="AppExpenseDTO!.Invoce">Fatura</label>
+                        <input type="file" asp-for="AppExpenseDTO!.Invoce" class="form-control" />
+                        <span asp-validation-for="AppExpenseDTO!.Invoce" class="text-danger"></span>
+                        <span class="text-danger">@Html.ValidationMessage("Fatura")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pl-lg-4">
+            <div class="row">
+                <div class="col-lg-6">
+                    <button type="submit" value="Gider Ekle" class="btn btn-m btn-success ml-0">Gider Ekle</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@if (TempData.ContainsKey("sweetAlertMessage"))
+{
+    <div id="sweet">
+    </div>
+}
+
+
+
+
+@section Scripts{
+    <script>
+        let sweetDiv = document.getElementById("sweet");
+
+        // sweetalert2 gösterme
+        sweetDiv.innerHTML(
+            Swal.fire({
+                title: '@TempData["sweetAlertMessage"]',
+                icon: '@TempData["sweetAlertType"]',
+                
+                didClose: () => {
+                    window.location.href = "/Personel/HarcamaTalepListe/";
+                }
+            }),
+            temizle()
+        );
+
+
+
+        // maaş formatı
+        function isNumberOrDotKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            var inputValue = evt.target.value;
+
+            // sadece sayılar ve en fazla bir virgül/nokta karakterine izin ver
+            if (charCode != 46 && charCode != 44 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                evt.preventDefault();
+                return false;
+            } else if ((charCode == 46 || charCode == 44) && (inputValue.indexOf(',') > -1)) {
+                evt.preventDefault();
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+}

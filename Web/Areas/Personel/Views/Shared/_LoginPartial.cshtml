@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Web.Areas.Identity.Data
+@using System.Security.Claims
+@using Web.Extensions
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+@inject ApplicationCore.Interfaces.ICompanyService _comapnyService
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var user = await UserManager.FindByIdAsync(userId);
+    await user.UserCompanyIncludeAsync(_comapnyService);
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="dropdown custom-dropdown d-flex align-items-center">
+        <div class="border-left mr-1 border-dark text-white">
+            |
+        </div>
+        <div class="fw-bold text-dark mr-3 py-1 px-2">
+            @user.Company.CompanyName
+        </div>
+        <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 20">
+            <div class="mr-3">
+                <img class="kucuk-profil-foto  rounded-circle" src="~/images/@(user != null ? user.Picture : "")" alt="Image">
+            </div>
+            <div class="profile-info text-white">
+                <h3 class="text-dark">@(user != null ? user.Name + " " + user.Surname : "")</h3>
+                <span class="d-inline text-dark">Personel</span>
+
+            </div>
+
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <h6 class="p-3 mb-0">Ayarlar</h6>
+            <a class="dropdown-item" asp-area="Personel" asp-controller="Personel" asp-action="BilgileriDuzenle"><span class="icon icon-people"></span>Düzenle</a>
+            <a class="dropdown-item" asp-area="Personel" asp-controller="Personel" asp-action="TumBilgi"><span class="icon icon-cog"></span>Tüm Bilgiler</a>
+            <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Logout"><span class="icon icon-sign-out"></span>Çıkış Yap</a>
+        </div>
+
+    </div>
+}
+
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+
+

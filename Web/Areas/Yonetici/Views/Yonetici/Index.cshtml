@@ -1,0 +1,82 @@
+﻿@using Web.Models
+@using Web.Extensions
+
+@model YoneticiViewModel
+
+<div class="content-wrapper d-flex align-items-center img">
+    <div class="card mx-auto shadow px-4 py-2 col-11" style="background-color: rgb(0, 0, 0, 0.7); ">
+        <div class="card-header">
+            <div class="d-flex justify-content-start align-items-center">
+                <div>
+                    <img src="~/images/@(Model.AppUserDTO != null ? Model.AppUserDTO.Picutre : "ik.jpg")" width="200" height="200" class="profil-foto rounded-circle" style="object-fit:cover" />
+                </div>
+                <div class="m-4 text-white">
+                    <span class="display-3">@(Model.AppUserDTO != null ? Model.AppUserDTO.Name : "John") @(Model.AppUserDTO != null ? Model.AppUserDTO.MiddleName : "Jo") @(Model.AppUserDTO != null ? Model.AppUserDTO.Surname : "Doe") @(Model.AppUserDTO != null ? Model.AppUserDTO.SecondSurname : "Smith")</span>
+                    <br />
+                    <span style="font-size:22px;">Yönetici</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body  text-white">
+
+
+            <h2 class="display-4 card-title text-left mb-3 text-warning border-bottom pb-2">Kullanıcı Bilgileri</h2>
+
+            @* model *@
+            <span class="mdi mdi-contact-mail"> <b class="text-warning" style="font-size:large">Mesleği :</b>  </span>
+            <span>&nbsp;@(Model.AppUserDTO != null ? Model.AppUserDTO.Job!.GetDisplayName() : "Amele")</span>
+            <hr />
+            <span class="mdi mdi-contact-mail"> <b class="text-warning" style="font-size:large">Departman :</b>  </span>
+            <span>&nbsp;@(Model.AppUserDTO != null ? Model.AppUserDTO.Department.ToString() : "İşsiz")</span>
+            <hr />
+            <span class="mdi mdi-contact-mail">  <b class="text-warning" style="font-size:large">E-mail :</b></span>
+            <span>&nbsp;@(Model.AppUserDTO != null ? Model.AppUserDTO.Email : "example@example.com")</span>
+            <hr />
+            <span class="mdi mdi-contact-mail">  <b class="text-warning" style="font-size:large">Adres :</b></span>
+            <span>&nbsp;@(Model.AppUserDTO != null ? Model.AppUserDTO.Address : "Belirsiz")</span>
+            <hr />
+            <span class="mdi mdi-contact-mail"> <b class="text-warning" style="font-size:large">Telefon :</b> </span>
+            <span>&nbsp;@(Model.AppUserDTO != null ? Model.AppUserDTO.PhoneNumber : "00000000000")</span>
+        </div>
+
+        <div class="d-flex justify-content-around pb-4 mt-3">
+            <a class="btn btn-lg btn-primary" asp-area="Yonetici" asp-controller="Yonetici" asp-action="TumBilgi"><b>Tüm Bilgiler</b></a>
+            <a class="btn btn-lg btn-info" asp-area="Yonetici" asp-controller="Yonetici" asp-action="BilgileriDuzenle"><b>Güncelle</b></a>
+        </div>
+    </div>
+</div>
+
+@if (TempData.ContainsKey("sweetAlertMessage"))
+{
+    <div id="sweet">
+    </div>
+}
+
+@section Scripts{
+    <script>
+        // sweetalert2 gösterilecek div
+        let sweetDiv = document.getElementById("sweet");
+
+        // sweetalert2 gösterme
+        sweetDiv.innerHTML(
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            title: '@TempData["sweetAlertMessage"]',
+            icon: '@TempData["sweetAlertType"]'
+        }),
+            Toast.fire({
+                icon: 'success',
+                title: 'Signed in successfully'
+            }),
+            temizle()
+        );
+
+    </script>
+}
+
+

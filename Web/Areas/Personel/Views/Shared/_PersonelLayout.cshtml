@@ -1,0 +1,113 @@
+﻿<!doctype html>
+<html lang="tr">
+<head>
+    <title>HR360</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@400;500;600;700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @* dropwdown *@
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/jquery.datatable.css" rel="stylesheet" />
+    <link href="~/css/font.css" rel="stylesheet" />
+
+</head>
+<body style="background-image: url(/images/personel2.jpg); background-size: cover; height:100vh">
+    <header>
+        <nav class="container-fluid bg-primary border-bottom border-dark">
+            <div class="flex flex-wrap justify-between items-center p-1">
+                <div class="d-flex justify-content-between">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center">
+                        <img src="https://flowbite.com/docs/images/logo.svg" class="" alt="Flowbite Logo" />
+                        <span class="self-center text-2xl text-danger font-semibold whitespace-nowrap dark:text-white"><b>HR360</b></span>
+                    </a>
+                    <ul class="d-flex m-0 text-dark nav">
+                        @*dropdown*@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Kişisel Bilgiler
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="width:200px;">
+                                <li class=""><a class="nav-link text-dark" asp-area="Personel" asp-controller="Personel" asp-action="TumBilgi">Tüm Bilgilerim</a></li>
+                                <li class=""><a class="nav-link text-dark" asp-area="Personel" asp-controller="Personel" asp-action="BilgileriDuzenle">Bilgilerimi Düzenle</a></li>
+                            </ul>
+                        </li>
+                        @*dropdown*@
+                        @*dropdown*@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                İşlemlerim
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="width:200px;">
+                                <li class=""><a class="nav-link text-dark" asp-area="Personel" asp-controller="Personel" asp-action="HarcamaTalepIsteme">Harcama Talep Et</a></li>
+                                <li class=""><a class="nav-link text-dark" asp-area="Personel" asp-controller="Personel" asp-action="HarcamaTalepListe">Harcama Talep Listem</a></li>
+
+                                <li class=""><a class="nav-link text-dark" asp-area="Personel" asp-controller="Personel" asp-action="AvansTalepEt">Avans Talep Et</a></li>
+                                <li class=""><a class="nav-link text-dark" asp-area="Personel" asp-controller="Personel" asp-action="AvansListele">Avans Talep Listem</a></li>
+                            </ul>
+                        </li>
+                        @*dropdown*@
+
+
+
+                    </ul>
+                </div>
+
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+    </header>
+
+    <main class="mt-4">
+        @RenderBody()
+    </main>
+
+
+    @* drowdown *@
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    @*dropdown*@
+    <script>
+        $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
+            if (!$(this).next().hasClass('show')) {
+                $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+            }
+            var $subMenu = $(this).next(".dropdown-menu");
+            $subMenu.toggleClass('show');
+
+
+            $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+                $('.dropdown-submenu .show').removeClass("show");
+            });
+
+
+            return false;
+        });
+    </script>
+    @*dropdown*@
+
+</body>
+</html>
+
